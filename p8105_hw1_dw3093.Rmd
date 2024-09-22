@@ -1,31 +1,71 @@
 ---
-title: "p8105 Homework 1"
+title: "P8105 homework 1"
 author: "Katherine Wang"
 date: "2024-09-21"
 output: github_document
 ---
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+# load the required library packages
+library(ggplot2)
+library(tidyverse)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+##Question 1:
+```{r}
+# first, load the penguins dataset:
+data("penguins", package = "palmerpenguins")
+#description of the penguins dataset:
+#there are 8 variables: 1. species, 2. island, 3. bill_legth_mm, 4. bill_depth_mm, 5. flipper_length_mm, 6. body_mass_g, 7. sex, 8. year.  
+rows=nrow(penguins)
+cols=ncol(penguins)
+#This dataset contains total 344 penguins with 3 species (gentoo, chinstrap, and adelie), and they from 3 island (biscoe, dream, and torgersen)
+mean_flipper=mean(penguins$flipper_length_mm, na.rm = TRUE)
+#the mean flipper length is approx. 200.92mm.
+#to make the scatterplot of flipper_length_mm (y) vs. bill_length_mm (x):
+ggplot(penguins, aes(y=flipper_length_mm,x=bill_length_mm))+geom_point(aes(color=species), na.rm=TRUE)+labs(
+title="Flipper Length vs Bill Length", 
+x="Bill Length (mm)", 
+y="Flipper Length (mm)") + theme_minimal()
+ggsave("penguin_scatterplot.png")
+```
+##Question 2
+```{r}
+#first, set a random seed to achieve reproducible results.
+set.seed(903)
+#assign random samples, logical vectors, character vectors, and factor vectors to variables.
+rand_sample = rnorm(10)
+log_vec = rand_sample > 0
+char_vec = letters[1:10]
+fac_vec = factor(rep(c("Level 1", "Level 2", "Level 3"), length.out = 10))
+#create a dataframe using previously defined variables.
+df <- data.frame(rand_sample, log_vec, char_vec, fac_vec)  
+#call the df to visualize the dataframe
+df
+#try to take the mean of each variable in my dataframe.
+mean_rand_sample <- mean(pull(df,rand_sample))
+mean_log_vec <- mean(pull(df,log_vec))
+mean_char_vec <- mean(pull(df,char_vec))
+mean_fac_vec <- mean(pull(df,fac_vec))
+#visualize the outputs
+mean_rand_sample
+mean_log_vec
+mean_char_vec
+mean_fac_vec
+#discuss: after the visualization, "mean_rand_sample" and "mean_log_vec" works, they have the mean values, which is -0.05094842 and 0.4, respectively. However, pulling the mean for "mean_char_vec"and "mean_fac_vec" did not work since both of the arguments are not numeric or logical, hence NA is returned for both. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+#convert logical, character, and factor variables to numeric data type.
+conv_log_vec <- as.numeric(pull(df,log_vec))
+conv_char_vec <- as.numeric(pull(df,char_vec))
+conv_fac_vec <- as.numeric(pull(df,fac_vec))
+#visualize the outputs
+conv_log_vec
+conv_char_vec
+conv_fac_vec
 
-```{r cars}
-summary(cars)
+#discuss: logical and factor variables could be converted to numeric data type, but the character variable couldn't (received a warning for trying to convert the character variable into numeric, and NAs were introduced by coercion). I expected logical variable to convert to numeric, but did not expect the factor variable to. It makes sense that the character variable could not be converted to numeric. This partially explains what happens when I tried to take the mean of the variables, but did not explain the phenomenon for factor variable.  
 ```
 
-## Including Plots
+```{r}
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
