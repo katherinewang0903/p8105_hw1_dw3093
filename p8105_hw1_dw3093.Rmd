@@ -2,10 +2,10 @@
 title: "P8105 homework 1"
 author: "Katherine Wang"
 date: "2024-09-21"
-output: html_document
+output: github_document
 ---
 
-```{r}
+```{r setup, message = FALSE}
 # load the required library packages
 library(ggplot2)
 library(tidyverse)
