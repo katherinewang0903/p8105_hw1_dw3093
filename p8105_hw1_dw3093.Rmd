@@ -2,7 +2,7 @@
 title: "P8105 homework 1"
 author: "Katherine Wang"
 date: "2024-09-21"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, message = FALSE}
